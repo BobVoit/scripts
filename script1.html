@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style type="text/css">
+        html { height: 100%; }
+        body { height: 100%;  margin: 0px; padding: 0px; }
+        #map { height: 100%; }
+    </style>
+</head>
+<body>
+    <div class="map" id="map"></div>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=cd0f8afd-5bbd-4842-8549-1e576c4e701b"></script>
+    <script>
+        ymaps.ready(init);
+
+        function init() {
+            const center = [56.845081, 53.188062]
+
+            let map = new ymaps.Map("map", {
+                center: center,
+                zoom: 16,
+                // controls: ["routePanelControl"]   
+            });
+
+            debugger
+            // Добавление метки.
+            // let placemark = new ymaps.Placemark([56.845081, 53.188062], {
+            //     // Ballon, надпись для метки
+            //     balloonContentHeader: "1",
+            //     balloonContentBody: "2",
+            //     balloonContentFooter: "3"
+            // }, {
+
+            // });
+            // map.geoObjects.add(placemark);
+
+
+            // Маршрут 
+            // let control = map.controls.get("routePanelControl");
+            // // debugger
+            // control.routePanel.state.set({
+            //     type: "auto",
+            //     fromEnabled: false,
+            //     from: "Ижевск, ул.Удмуртская, д.266",
+            //     toEnabled: false,
+            //     to: "Ижевск, ул.Академика Павлова, д.41"
+            // });
+
+            // control.routePanel.options.set({
+            //     types: {
+            //         masstransit: false,
+            //         pedes: false,
+            //         taxi: false,
+            //     }
+            // });
+
+            // map.geoObjects.add(getMultiRoute("Ижевск, ул.Удмуртская, д.266", "Ижевск, ул.Академика Павлова, д.41"));
+
+            // Поиск координат центра Нижнего Новгорода.
+            // ymaps.geocode('Нижний Новгород', {
+            //     results: 1
+            // }).then(function (res) {
+            //     // Выбираем первый результат геокодирования.
+            //     var firstGeoObject = res.geoObjects.get(0),
+            //         // Координаты геообъекта.
+            //         coords = firstGeoObject.geometry.getCoordinates(),
+            //         // Область видимости геообъекта.
+            //         bounds = firstGeoObject.properties.get('boundedBy');
+
+            //     firstGeoObject.options.set('preset', 'islands#darkBlueDotIconWithCaption');
+            //     // Получаем строку с адресом и выводим в иконке геообъекта.
+            //     firstGeoObject.properties.set('iconCaption', firstGeoObject.getAddressLine());
+
+            //     // Добавляем первый найденный геообъект на карту.
+            //     map.geoObjects.add(firstGeoObject);
+            //     // Масштабируем карту на область видимости геообъекта.
+            //     map.setBounds(bounds, {
+            //         // Проверяем наличие тайлов на данном масштабе.
+            //         checkZoomRange: true
+            //     });
+            // }).catch(function(err) {
+            //     console.error(err);
+            // });
+        }
+  
+        // Получить мультимаршрут
+        function getMultiRoute(map, ...points) {
+            let multiRoute = new ymaps.multiRouter.MultiRoute({
+                referencePoints: points,
+                params: {
+                    routingMode: "auto"
+                }
+            }, {
+                boundsAutoApply: true
+            });
+
+            map.geoObjects.add(multiRoute);
+        }
+
+        // Добавить метку на карту.
+        function add(map, x, y, headerText = "", bodyText = "", footerText = "") {
+            let placemark = new ymaps.Placemark([x, y], {
+                // Ballon, надпись для метки
+                balloonContentHeader: headerText,
+                balloonContentBody: bodyText,
+                balloonContentFooter: footerText
+            }, {
+
+            });
+            map.geoObjects.add(placemark);
+        }
+
+        // Удаление всех меток на карте.
+        function clearAllPlacemarks(map) {
+            map.geoObjects.removeAll();    
+        }
+
+  </script>
+</body>
+</html>
